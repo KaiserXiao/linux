@@ -15,12 +15,13 @@ int main(int argc,char *argv[])
 	fputs(Wr_buf,fp);
 	
 	//fgets(Rd_buf,128,fp);
-	//"fputs" make the point "fp" changed! 
 	//printf("The Rd_buf is %s\n",Rd_buf);	
 	
-	//while(1);
-	//if line18 is comment ,the while(1) will success,
-	//I guess fgets have some action to memory
+	//while(1);			
+	////如果fgets和while都被激活和while都被激活
+	////那么在整个程序暂停后shell可以看到还是有显示
+	////fputs可能使用了刷新内存的函数fflush
+	
 	fclose(fp);
 	return 0;
 }
