@@ -1,4 +1,4 @@
-//基于Class7
+//ji chu Class7...
 
 #include "stdio.h"
 int main(int argc,char *argv[])
@@ -26,11 +26,8 @@ int main(int argc,char *argv[])
 	rewind(fp);
 	printf("The ftell(fp)2 retrun %ld \n ",ftell(fp));	
 	//test4
-	//这里有必要解释一下，rewind会把fp的值打出来
-	//test4可以看出ftell和rewind的作用
 	
 	fgets(Rd_buf,128,fp);
-	//没有rewind和fseek，fgets的Rd_buf是乱码
 	printf("The Rd_buf is %s\n",Rd_buf);	
 	fclose(fp);
 	return 0;

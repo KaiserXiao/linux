@@ -1,4 +1,4 @@
-////基于Class7的Test_fgets.c
+////ji yu Class7_fgets
 #include "stdio.h"
 int main(int argc,char *argv[])
 {
