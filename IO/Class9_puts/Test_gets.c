@@ -4,17 +4,18 @@ int main()
 {
 	char buf[128]={0};
 	//gets(buf);
-	////no include"\n" 	
+	////gets函数从键盘直接读字符
+	////按下回车结束，所以不会包含"\n"
 	
 	fgets(buf,128,stdin);
-	////include "\n"
+	////可以从其他文件读，会包含 "\n"
 	
 	printf ("len is %d\n",strlen(buf));	
 	
 	//fputs(buf ,stdout);
-	////no add "\n"
+	////fputs函数不会添加"\n"
 
 	puts(buf);
-	////add "\n"
+	////puts 函数会在结尾添加"\n"
 	return 0;
 }
