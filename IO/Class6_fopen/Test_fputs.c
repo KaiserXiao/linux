@@ -6,7 +6,7 @@ int main(int argc,char *argv[])
 	char Rd_buf[128];
 	fp=fopen(argv[1],"w+");
 	//fp=fopen(argv[1],"a+");
-	//
+	//只是纯粹修改和测试fopen
 	if(NULL==fp)
 	{
 		printf("open file %s failure.\n",argv[1]);

@@ -14,6 +14,8 @@ int main(int argc,char *argv[])
 	printf("Open file %s success.\n",argv[1]);
 	fputs(Wr_buf,fp);
 	
+	////基于Class6_fopen/Test_fopen.c
+	
 	//fgets(Rd_buf,128,fp);
 	//printf("The Rd_buf is %s\n",Rd_buf);	
 	
