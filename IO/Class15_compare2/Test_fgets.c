@@ -28,15 +28,15 @@ int main(int argc,char *argv[])
 		return -1;
 	}
 	printf("Open des file %s success\n",argv[2]);
-#if 1
+#if 0
 	while((Read_ret=fgetc(src_fp))&&!feof(src_fp))
 		fputc(Read_ret,des_fp);
 	////feof return 1 if end
 #else
 	while(fgets(Read_buf,128,src_fp))
-		fputs(Read_buf,stdout);
+		fputs(Read_buf,des_fp);
 #endif
 	printf("finish\n");
-	fclose(src_fp);
-	fclose(des_fp);	
+	fclose(src_fp);	
+	fclose(des_fp);
 }	
