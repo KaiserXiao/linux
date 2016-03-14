@@ -21,19 +21,18 @@ int main(int argc,char *argv[])
 	fwrite(Write_buf,sizeof(char),sizeof(Write_buf),src_fp);
 	//	while(1);
 	////test 1
-	////ceshi shifou hanghuancun
-	////nothing in argv[1]
+	////测试是否为"\n"行缓存
+	////结果不是，没有显示出来
 
 	//fflush(src_fp);
 	////test 2
-	////ce shi you wu huancun
-	
+	////强制刷新，有缓存但不是行缓存	
 
 	////start read
 	rewind(src_fp);
 	fread(Read_buf,sizeof(char),sizeof(Write_buf),src_fp);
 	////test 3
-	////without fflush ,still work,so there is fflush in fread?
+	////没有fflush，依旧有显示，猜测fread里面有fflush
 	printf("the Read_buf is %s\n",Read_buf);
 	fclose(src_fp);	
 }	
