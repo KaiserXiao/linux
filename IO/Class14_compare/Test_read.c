@@ -1,8 +1,6 @@
-//use open read ,write
-//no wenjian liu 
-//xi tong tiao yong han shu 
-
-
+//使用了 open,read ,write
+//并不使用文件流
+//使用系统调用函数 
 
 #include "stdio.h"
 #include "unistd.h"
