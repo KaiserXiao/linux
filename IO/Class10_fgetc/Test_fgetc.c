@@ -19,7 +19,7 @@ int main(int argc,char *argv[])
 	
 	ret=fgetc(fp);	
 	printf("ret is %d\n",ret);	
-	////EOF	
+	////EOF	   注意这里用的%d
 	
 	fclose(fp);
 	return 0;

@@ -1,4 +1,4 @@
-////ji yu class7
+////基于Class7
 #include "stdio.h"
 int main(int argc,char *argv[])
 {
@@ -17,9 +17,10 @@ int main(int argc,char *argv[])
 	////test 2
 
 	fflush(fp);
+	////test 3
 	while(1);	
-	
-	
+	////测试fputc是否为行缓存，结果不是
+	////但又明确使用了缓存
 	fclose(fp);
 	return 0;
 }
