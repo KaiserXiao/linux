@@ -1,0 +1,1 @@
+﻿1.写好库函数 sub.c2.再    gcc -c -o  sub.o sub.c3.再    ar  -cr  -o libsub.a  sub.o4.再    gcc    main.c  -L   .   -lsub对第4解释一下，-L 是locate 定位 ，后面跟着一个"."，指本地的意思-l 是找静态函数库的名称 ，sub 是libsub.a libsub.a中开头lib和结尾的.a是固定的所以只要sub就可以了
