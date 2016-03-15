@@ -23,9 +23,13 @@ int main()
 	}
 	printf("Open success\n");	
 
-
-	while(dir=readdir(dp))
-		printf("the dp is %ld \nino is %ld\nname is %s\n",telldir(dp),dir->d_ino,dir->d_name);
+	dir=readdir(dp);
+	while(dir)
+	{
+		printf("the dp is %ld \nino is %ld\nname is %s\n",\
+		telldir(dp),dir->d_ino,dir->d_name);
+		dir=readdir(dp);
+	}
 	closedir(dp);
 	return 0;
 	
