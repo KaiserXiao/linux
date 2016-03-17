@@ -1,0 +1,2 @@
+	本节课通过./thread_exit 1或者./thread_exit 2的调用来
+	说明exit return 的比较
