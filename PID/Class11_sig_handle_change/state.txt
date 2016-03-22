@@ -1,0 +1,153 @@
+2016年3月21日21:13:27
+真的非常非常有趣
+整个函数被我改的面目全非
+但我们对它的理解又上了一层
+
+首先我们测试
+ sigaction(SIGQUIT,&act,NULL);
+这个函数的意思
+函数的意思和signal一样就是当SIGQUIT出现时，
+不用原来默认的处理，
+而是用act的地址所指向的函数，就是act函数
+结果很出人意料
+1.
+当只有一个sigaction函数时，
+当然只会运行那个sigaction所指定的
+
+2.
+但当出现两个sigaction函数时
+只会运行最后使用的sigaction时，sigaction所指定的函数
+在例子中我们可以通过修改test来修改函数的运行顺序
+test置0，fun1先运行，最后我们发现fun2最后运行了sigaction
+所以打印出了thread 2 receive signal
+这里还可以发现一个细节，
+我们先create 2，再create 1
+好像create thread是通过栈的方式来决定运行顺序的
+先create了a，a压栈
+再create了b，b压栈
+运行，
+先取出b，运行
+再取出a，运行
+really？
+下面测试
+
+3.
+然后我们当然不信
+那么怎么办？
+使用三个函数来测试
+create 的顺序为
+1，2，3
+那么运行的顺序为
+3，2，1
+结果应该输出
+-->New thread THREE
+-->New thread Two
+-->New thread One
+It`s true!!!
+那么输入ctrl+\，SIGQUIT信号会怎么样呢？
+-->One thread get signal
+perfect！！！
+
+2016年3月21日21:36:05
+总结：
+说明了
+无论存在多少个sigaction函数，最后运行哪个，哪个就会被激活
+
+2016年3月21日21:38:16
+很好，接下来，就是要测试pthread_sigmask函数
+只create fun1 ，开启pthread_sigmask
+pthread_sigmask(SIG_BLOCK,&act.sa_mask,NULL);
+pthread_sigmask函数的作用是
+将 { &act.sa_mask的信号集 }给{SIG_BLOCK}掉
+即产生的    &act.sa_mask  这种类型的中断不起作用
+&act.sa_mask中就有SIGQUIT
+即SIGQUIT不起作用
+那么函数会怎么样？
+
+
+2016年3月22日09:41:55
+在只有一个fun1的情况，很奇怪，无论是否注释掉sigmask语句
+都会打印出thread One receive the fun
+于是我做了如下的修改
+在最后
+	    printf("Begin to kill one\n");
+162         for(;;)
+163         {
+164                 pause();
+165                 getchar();
+166                 pthread_kill(tid1,SIGQUIT);
+167         }
+
+并启动fun2和fun3
+
+create的顺序为2，1，3
+运行的顺序为3，1，2
+如果没错，出现的应该是thread Two 收到信号
+因为tid1已经屏蔽了SIGQUIT信号
+而SIGQUIT信号又确实存在
+只能通过fun2最后调用过的sigaction来中断处理
+
+结果呢？
+的确如此
+
+dalek@AntHole:~/Github/linux/PID/Class11_sig_handle_change$ ./sig_handle
+fist+++++
+New thread THREE
+New thread One
+New thread Two
+Begin to kill one
+fun THREE over
+fun One over
+fun Two over
+^\Two thread get signal
+^\Two thread get signal
+^\Two thread get signal
+^\Two thread get signal
+^C
+
+
+而代码没改
+
+160         printf("Begin to kill one\n");
+161         for(;;)
+162         {
+163                 pause();
+164                 getchar();
+165                 pthread_kill(tid1,SIGQUIT);
+166         }
+167         return 0;
+
+说明什么？
+kill了一个SIGQUIT给tid1
+但tid1并没有任何的反应
+反而打出了
+Two thread get signal
+也就是说我们之前的想法是成立的
+
+程序虽然屏蔽了fun1对于signal的接受
+但最终还是要反映SIGQUIT的这个中断
+那么那个sigaction(SIGQUIT,xxx)最后运行，
+就采用那个sigaction来作为中断的处理
+
+如果我们屏蔽掉fun2
+即
+  pthread_sigmask(SIG_BLOCK,&act.sa_mask,NULL);
+并把create 的顺序改为3，2，1
+那么最终打印出来是
+three thread  get the signal
+
+试试
+
+fist+++++
+New thread One
+New thread Two
+New thread THREE
+Begin to kill one
+fun One over
+fun Two over
+fun THREE over
+^\THREE thread get signal
+^\THREE thread get signal
+
+
+结束！！！！！
